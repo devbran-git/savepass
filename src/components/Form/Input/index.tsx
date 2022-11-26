@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 import { TextInputProps } from 'react-native';
-import { Control, Controller } from 'react-hook-form';
+import {
+  Control,
+  Controller,
+  FieldError,
+  FieldErrorsImpl,
+  Merge,
+} from 'react-hook-form';
 
 import {
   Container,
@@ -9,14 +15,18 @@ import {
   InputContainer,
   FormInput,
   ToggleShowPassButton,
-  Icon
+  Icon,
 } from './styles';
 
 interface Props extends TextInputProps {
   control: Control;
   name: string;
   title: string;
-  error: string;
+  error:
+    | string
+    | FieldError
+    | Merge<FieldError, FieldErrorsImpl<any>>
+    | undefined;
 }
 
 export function Input({
@@ -45,13 +55,14 @@ export function Input({
               secureTextEntry={secureTextEntry && passwordHidden}
             />
             {secureTextEntry && (
-              <ToggleShowPassButton onPress={() => setPasswordHidden(!passwordHidden)}>
-                <Icon name={passwordHidden ? "eye-off" : "eye"} />
+              <ToggleShowPassButton
+                onPress={() => setPasswordHidden(!passwordHidden)}>
+                <Icon name={passwordHidden ? 'eye-off' : 'eye'} />
               </ToggleShowPassButton>
             )}
           </InputContainer>
         )}
       />
     </Container>
-  )
+  );
 }
